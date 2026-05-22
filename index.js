@@ -57,17 +57,28 @@ async function run() {
         res.json(result);
       });
   
-      app.patch("/pets/:id", async (req, res) => {
-        const { id } = req.params;
+      app.put("/pets/:id", async (req, res) => {
+        const id = req.params.id;
         const updatedData = req.body;
-        console.log(updatedData);
-  
+      
         const result = await petCollection.updateOne(
           { _id: new ObjectId(id) },
-          { $set: updatedData },
+          { $set: updatedData }
         );
-  
-        res.json(result);
+      
+        res.send(result);
+      });
+
+      app.get("/my-pets/:email", async (req, res) => {
+        const email = req.params.email;
+      
+        const query = {
+          ownerEmail: email,
+        };
+      
+        const result = await petCollection.find(query).toArray();
+      
+        res.send(result);
       });
   
       app.delete("/pets/:id", async (req, res) => {
