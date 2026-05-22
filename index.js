@@ -42,7 +42,7 @@ async function run() {
       app.post("/pets", async (req, res) => {
         const petData = req.body;
         console.log(petData);
-        const result = await destinationCollection.insertOne(petData);
+        const result = await petCollection.insertOne(petData);
   
         res.json(result);
       });
@@ -88,9 +88,20 @@ async function run() {
   
       app.post("/request", async (req, res) => {
         const requestData = req.body;
-        const result = await requestCollection.insertOne(requestData);
-  
-        res.json(result);
+        const result = await requestCollection.insertOne({
+            ...requestData,
+            createdAt: new Date(), 
+          });
+      });
+
+      app.get("/request", async (req, res) => {
+        const email = req.query.email;
+      
+        const result = await requestCollection
+          .find({ userEmail: email })
+          .toArray();
+      
+        res.send(result);
       });
   
       app.delete("/request/:requestId", async (req, res) => {
