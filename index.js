@@ -69,6 +69,18 @@ async function run() {
         res.send(result);
       });
 
+      app.patch("/request/:id", async (req, res) => {
+        const id = req.params.id;
+        const { status } = req.body;
+      
+        const result = await requestCollection.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: { status } }
+        );
+      
+        res.send(result);
+      });
+
       app.get("/my-pets/:email", async (req, res) => {
         const email = req.params.email;
       
