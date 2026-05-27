@@ -100,6 +100,11 @@ async function run() {
         });
         res.json(result);
       });
+
+       app.get("/requests", async (req, res) => {
+        const result = await requestCollection.find().toArray();
+        res.json(result);
+      });
   
       app.get("/requests/:userId", async (req, res) => {
         const { userId } = req.params;
