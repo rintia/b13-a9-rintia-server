@@ -69,7 +69,7 @@ async function run() {
         res.send(result);
       });
 
-      app.patch("/request/:id", async (req, res) => {
+      app.patch("/requests/:id", async (req, res) => {
         const id = req.params.id;
         const { status } = req.body;
       
@@ -101,7 +101,7 @@ async function run() {
         res.json(result);
       });
   
-      app.get("/request/:userId", async (req, res) => {
+      app.get("/requests/:userId", async (req, res) => {
         const { userId } = req.params;
   
         const result = await requestCollection.find({ userId: userId }).toArray();
@@ -109,7 +109,7 @@ async function run() {
         res.json(result);
       });
   
-      app.post("/request", async (req, res) => {
+      app.post("/requests", async (req, res) => {
         const requestData = req.body;
         const result = await requestCollection.insertOne({
             ...requestData,
@@ -117,7 +117,7 @@ async function run() {
           });
       });
 
-      app.get("/request", async (req, res) => {
+      app.get("/requests", async (req, res) => {
         const email = req.query.email;
       
         const result = await requestCollection
@@ -127,7 +127,7 @@ async function run() {
         res.send(result);
       });
   
-      app.delete("/request/:requestId", async (req, res) => {
+      app.delete("/requests/:requestId", async (req, res) => {
         const { requestId } = req.params;
         const result = await requestCollection.deleteOne({
           _id: new ObjectId(requestId),
