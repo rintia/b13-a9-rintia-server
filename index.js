@@ -1,9 +1,9 @@
 const express = require("express");
-const dontenv = require("dotenv");
+const dotenv = require("dotenv");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
-dontenv.config();
+dotenv.config();
 
 const uri = process.env.MONGODB_URI;
 
