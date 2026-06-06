@@ -105,9 +105,19 @@ async function run() {
         const result = await requestCollection.find().toArray();
         res.json(result);
       });
+
+      // app.get("/pets/:id", async (req, res) => {
+      //   const { id } = req.params;
   
-      app.get("/requests/:userId", async (req, res) => {
-        const { userId } = req.params;
+      //   const result = await petCollection.findOne({
+      //     _id: new ObjectId(id),
+      //   });
+  
+      //   res.json(result);
+      // });
+  
+      app.get("/requests/userId", async (req, res) => {
+        const { id } = req.params;
   
         const result = await requestCollection.find({ userId: userId }).toArray();
   
