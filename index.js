@@ -116,10 +116,12 @@ async function run() {
       //   res.json(result);
       // });
   
-      app.get("/requests/userId", async (req, res) => {
+      app.get("/requests/:requestId", async (req, res) => {
         const { id } = req.params;
   
-        const result = await requestCollection.find({ userId: userId }).toArray();
+        const result = await requestCollection.find({ 
+          requestId : new ObjectId (petId)
+         }).toArray();
   
         res.json(result);
       });
