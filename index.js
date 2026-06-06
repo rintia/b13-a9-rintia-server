@@ -22,153 +22,160 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
-    try {
-      // await client.connect();
-  
-      const db = client.db("PetAdoption");
-      const petCollection = db.collection("pets");
-      const requestCollection = db.collection("requests");
-  
-      app.get("/featured", async (req, res) => {
-        const result = await petCollection.find().limit(4).toArray()
-        res.json(result)
-      })
-  
-      app.get("/pets", async (req, res) => {
-        const result = await petCollection.find().toArray();
-        res.json(result);
-      });
-  
-      app.post("/pets", async (req, res) => {
-        const petData = req.body;
-        console.log(petData);
-        const result = await petCollection.insertOne(petData);
-  
-        res.json(result);
-      });
-  
-      app.get("/pets/:id", async (req, res) => {
-        const { id } = req.params;
-  
-        const result = await petCollection.findOne({
-          _id: new ObjectId(id),
-        });
-  
-        res.json(result);
-      });
-  
-      app.put("/pets/:id", async (req, res) => {
-        const id = req.params.id;
-        const updatedData = req.body;
-      
-        const result = await petCollection.updateOne(
-          { _id: new ObjectId(id) },
-          { $set: updatedData }
-        );
-      
-        res.send(result);
+  try {
+    // await client.connect();
+
+    const db = client.db("PetAdoption");
+    const petCollection = db.collection("pets");
+    const requestCollection = db.collection("requests");
+
+    app.get("/featured", async (req, res) => {
+      const result = await petCollection.find().limit(4).toArray()
+      res.json(result)
+    })
+
+    app.get("/pets", async (req, res) => {
+      const result = await petCollection.find().toArray();
+      res.json(result);
+    });
+
+    app.post("/pets", async (req, res) => {
+      const petData = req.body;
+      console.log(petData);
+      const result = await petCollection.insertOne(petData);
+
+      res.json(result);
+    });
+
+    app.get("/pets/:id", async (req, res) => {
+      const { id } = req.params;
+
+      const result = await petCollection.findOne({
+        _id: new ObjectId(id),
       });
 
-      app.patch("/requests/:id", async (req, res) => {
-        const id = req.params.id;
-        const { status } = req.body;
-      
-        const result = await requestCollection.updateOne(
-          { _id: new ObjectId(id) },
-          { $set: { status } }
-        );
-      
-        res.send(result);
-      });
+      res.json(result);
+    });
 
-      app.get("/my-pets/:email", async (req, res) => {
-        const email = req.params.email;
-      
-        const query = {
-          ownerEmail: email,
-        };
-      
-        const result = await petCollection.find(query).toArray();
-      
-        res.send(result);
-      });
-  
-      app.delete("/pets/:id", async (req, res) => {
-        const { id } = req.params;
-        const result = await petCollection.deleteOne({
-          _id: new ObjectId(id),
-        });
-        res.json(result);
-      });
+    app.put("/pets/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedData = req.body;
 
-       app.get("/requests", async (req, res) => {
-        const result = await requestCollection.find().toArray();
-        res.json(result);
-      });
-
-      // app.get("/pets/:id", async (req, res) => {
-      //   const { id } = req.params;
-  
-      //   const result = await petCollection.findOne({
-      //     _id: new ObjectId(id),
-      //   });
-  
-      //   res.json(result);
-      // });
-  
-      app.get("/requests/:requestId", async (req, res) => {
-        const { requestId } = req.params;
-  
-        const result = await requestCollection.find({ 
-          requestId : new ObjectId (petId)
-         }).toArray();
-  
-        res.json(result);
-      });
-  
-      app.post("/requests", async (req, res) => {
-        const requestData = req.body;
-        const result = await requestCollection.insertOne({
-            ...requestData,
-            createdAt: new Date(), 
-          });
-      });
-
-      app.get("/requests", async (req, res) => {
-        const email = req.query.email;
-      
-        const result = await requestCollection
-          .find({ userEmail: email })
-          .toArray();
-      
-        res.send(result);
-      });
-  
-      app.delete("/requests/:requestId", async (req, res) => {
-        const { requestId } = req.params;
-        const result = await requestCollection.deleteOne({
-          _id: new ObjectId(requestId),
-        });
-  
-        res.json(result);
-      });
-  
-      // await client.db("admin").command({ ping: 1 });
-      console.log(
-        "Pinged your deployment. You successfully connected to MongoDB!",
+      const result = await petCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: updatedData }
       );
-    } finally {
-      // Ensures that the client will close when you finish/error
-      // await client.close();
-    }
+
+      res.send(result);
+    });
+
+    app.patch("/requests/:id", async (req, res) => {
+      const id = req.params.id;
+      const { status } = req.body;
+
+      const result = await requestCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { status } }
+      );
+
+      res.send(result);
+    });
+
+    app.get("/my-pets/:email", async (req, res) => {
+      const email = req.params.email;
+
+      const query = {
+        ownerEmail: email,
+      };
+
+      const result = await petCollection.find(query).toArray();
+
+      res.send(result);
+    });
+
+    app.delete("/pets/:id", async (req, res) => {
+      const { id } = req.params;
+      const result = await petCollection.deleteOne({
+        _id: new ObjectId(id),
+      });
+      res.json(result);
+    });
+
+    app.get("/requests", async (req, res) => {
+      const result = await requestCollection.find().toArray();
+      res.json(result);
+    });
+
+    // app.get("/pets/:id", async (req, res) => {
+    //   const { id } = req.params;
+
+    //   const result = await petCollection.findOne({
+    //     _id: new ObjectId(id),
+    //   });
+
+    //   res.json(result);
+    // });
+
+    app.get("/requests/pet/:petId", async (req, res) => {
+      try {
+        const { petId } = req.params;
+
+        const requests = await requestCollection
+          .find({ petId: petId })
+          .toArray();
+
+        res.status(200).json(requests);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to fetch requests" });
+      }
+    });
+
+
+
+    app.post("/requests", async (req, res) => {
+      const requestData = req.body;
+      const result = await requestCollection.insertOne({
+        ...requestData,
+        createdAt: new Date(),
+      });
+    });
+
+    app.get("/requests", async (req, res) => {
+      const email = req.query.email;
+
+      const result = await requestCollection
+        .find({ userEmail: email })
+        .toArray();
+
+      res.send(result);
+    });
+
+    app.delete("/requests/:requestId", async (req, res) => {
+      const { requestId } = req.params;
+      const result = await requestCollection.deleteOne({
+        _id: new ObjectId(requestId),
+      });
+
+      res.json(result);
+    });
+
+    // await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!",
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    // await client.close();
   }
-  run().catch(console.dir);
-  
+}
+run().catch(console.dir);
+
 
 app.get("/", (req, res) => {
-    res.send("Server is running fine!");
-  });
-  
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  res.send("Server is running fine!");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
