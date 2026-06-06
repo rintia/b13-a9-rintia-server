@@ -117,7 +117,7 @@ async function run() {
       // });
   
       app.get("/requests/:requestId", async (req, res) => {
-        const { id } = req.params;
+        const { requestId } = req.params;
   
         const result = await requestCollection.find({ 
           requestId : new ObjectId (petId)
