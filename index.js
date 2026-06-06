@@ -116,7 +116,7 @@ async function run() {
     //   res.json(result);
     // });
 
-    app.get("/requests/pet/:petId", async (req, res) => {
+    app.get("/requests/:petId", async (req, res) => {
       try {
         const { petId } = req.params;
 
